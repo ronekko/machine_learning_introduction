@@ -6,6 +6,7 @@ Created on Fri Mar 23 13:57:41 2018
 """
 
 from pathlib import Path
+import pickle
 
 import cv2
 import numpy as np
@@ -35,9 +36,10 @@ if __name__ == '__main__':
     x = np.concatenate((positives, negatives))
 
     # train
-    model = sklearn.ensemble.RandomForestClassifier(
-        class_weight='balanced')
+    model = sklearn.ensemble.GradientBoostingClassifier()
     model.fit(x, target)
+    with open('model.pkl', 'wb') as f:
+        pickle.dump(model, f)
 
     # evaluate
     for filepath in Path('evaluate').glob('*'):
